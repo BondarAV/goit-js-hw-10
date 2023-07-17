@@ -1,8 +1,17 @@
 @import './common';
 @import './example';
 
+.cat-info,
+.temperament-box {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: center;
+}
+
 [data-select],
 [data-loader],
-[data-error] {
+[data-error],
+[data-div] {
   display: none;
 }

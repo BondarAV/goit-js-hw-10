@@ -139,7 +139,14 @@ summary {
   background-size: cover;
 }
 
-[data-select], [data-loader], [data-error] {
+.cat-info, .temperament-box {
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  display: flex;
+}
+
+[data-select], [data-loader], [data-error], [data-div] {
   display: none;
 }
 

@@ -503,7 +503,46 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"8lqZg":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "catInfo", ()=>catInfo);
+var _catApi = require("./cat-api");
+const catInfo = document.querySelector(".cat-info");
+const catPhoto = document.querySelector(".cat-photo");
+const breedName = document.querySelector(".breed-name");
+const breedDesc = document.querySelector(".breed-description");
+const temperamentDesc = document.querySelector(".temperament-description");
+const temperament = document.querySelector(".temperament");
+function fillCatInfo(catObj) {
+    breedName.textContent = catObj.name;
+    breedDesc.textContent = catObj.description;
+    temperamentDesc.textContent = catObj.temperament;
+    temperament.textContent = "Temperament:";
+}
+function addCatPhoto(photoObj, breedName1) {
+    catPhoto.src = photoObj.url;
+    catPhoto.alt = breedName1;
+}
+(0, _catApi.fetchBreeds)().then((data)=>{
+    (0, _catApi.fillSelect)(data);
+    (0, _catApi.selectElement).toggleAttribute("data-select");
+    (0, _catApi.loaderElement).toggleAttribute("data-loader");
+});
+catInfo.removeAttribute("data-div");
+(0, _catApi.selectElement).addEventListener("change", (event)=>{
+    catInfo.toggleAttribute("data-div");
+    const selectedValue = event.currentTarget.value;
+    (0, _catApi.fetchCatByBreed)(selectedValue).then((data)=>{
+        addCatPhoto(...data, selectedValue);
+    });
+    (0, _catApi.loaderElement).toggleAttribute("data-loader");
+    (0, _catApi.fetchBreeds)().then((data)=>{
+        fillCatInfo(data.find((element)=>element.id == selectedValue));
+        catInfo.toggleAttribute("data-div");
+    });
+    (0, _catApi.loaderElement).toggleAttribute("data-loader");
+});
 
-},{}]},["1RB6v","8lqZg"], "8lqZg", "parcelRequired7c6")
+},{"./cat-api":"d7YdZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["1RB6v","8lqZg"], "8lqZg", "parcelRequired7c6")
 
 //# sourceMappingURL=index.975ef6c8.js.map

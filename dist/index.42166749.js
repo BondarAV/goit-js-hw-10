@@ -503,60 +503,78 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"d7YdZ":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "selectElement", ()=>selectElement);
+parcelHelpers.export(exports, "loaderElement", ()=>loaderElement);
+parcelHelpers.export(exports, "fetchBreeds", ()=>fetchBreeds);
+parcelHelpers.export(exports, "fillSelect", ()=>fillSelect);
+parcelHelpers.export(exports, "fetchCatByBreed", ()=>fetchCatByBreed);
 const BASE_URL = "https://api.thecatapi.com/v1/";
 const API_KEY = "live_egpF2PAPEBVhu3HyyeTIg9WBCAEYPCR0rSPh7cGn6wiVteBIvwrTNWq6M5BnZuMN";
+const catInfo = document.querySelector(".cat-info");
 const selectElement = document.querySelector(".breed-select");
-const loader = document.querySelector(".loader");
-loader.toggleAttribute("data-loader");
-/* ?api_key=${API_KEY}
-
-{
-  method: "GET",
-  headers: {
-    "x-api-key":
-      "live_egpF2PAPEBVhu3HyyeTIg9WBCAEYPCR0rSPh7cGn6wiVteBIvwrTNWq6M5BnZuMN",
-  },
-
-  `${BASE_URL}breeds?api_key=${API_KEY}`
-
-  "https://api.thecatapi.com/v1/images/search?api_key=live_egpF2PAPEBVhu3HyyeTIg9WBCAEYPCR0rSPh7cGn6wiVteBIvwrTNWq6M5BnZuMN"
-*/ function fetchBreeds() {
-    fetch(`${BASE_URL}breeds?api_key=${API_KEY}`).then((res)=>{
+const loaderElement = document.querySelector(".loader");
+const errorElement = document.querySelector(".error");
+function fetchBreeds() {
+    return fetch(`${BASE_URL}breeds?api_key=${API_KEY}`).then((res)=>{
         if (!res.ok) throw new Error(res.status);
+        loaderElement.toggleAttribute("data-loader");
         return res.json();
-    }).then((data)=>{
-        console.log(data);
-        fillSelect(data);
     }).catch((error)=>{
+        errorElement.toggleAttribute("data-error");
         console.log(error);
     });
 }
-// fetch(`${BASE_URL}breeds?api_key=${API_KEY}`)
-//   .then((res) => {
-//     if (!res.ok) {
-//       throw new Error(res.status);
-//     }
-//     return res.json();
-//   })
-//   .then((data) => {
-//     console.log(data);
-//     fillSelect(data);
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
 function fillSelect(data) {
     data.forEach((element)=>{
         const newOption = document.createElement("option");
         newOption.textContent = element.name;
         newOption.setAttribute("value", element.id);
         selectElement.append(newOption);
-    // optionsArray.push(`document.querySelector(option[value=${element.id}]`);
     });
-    selectElement.toggleAttribute("data-select");
-    loader.toggleAttribute("data-loader");
 }
-fetchBreeds();
+function fetchCatByBreed(breedId) {
+    return fetch(`${BASE_URL}images/search?breed_ids=${breedId}`).then((res)=>{
+        if (!res.ok) throw new Error(res.status);
+        loaderElement.toggleAttribute("data-loader");
+        return res.json();
+    }).catch((error)=>{
+        loaderElement.toggleAttribute("data-loader");
+        errorElement.toggleAttribute("data-error");
+        console.log(error);
+    });
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
 },{}]},["6Cm3v","d7YdZ"], "d7YdZ", "parcelRequired7c6")
 
